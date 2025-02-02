@@ -1,0 +1,20 @@
+<svg width="62" height="61" viewBox="0 0 62 61" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Group">
+<g id="Ellipse 1" filter="url(#filter0_b_21_47)">
+<circle cx="31" cy="31" r="22" fill="#1D1214" fill-opacity="0.75"/>
+</g>
+<path id="Path" d="M26.8413 8.83704C21.7377 9.7874 17.123 12.4638 13.7814 16.4113" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path id="Path_2" d="M9.72409 23.548C8.03855 28.3568 8.08168 33.597 9.84617 38.3778" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path id="Path_3" d="M14.0222 45.4465C17.3421 49.2505 21.86 51.8272 26.8413 52.7575" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path id="Path_4" d="M35.0926 8.82703C45.7634 10.7795 53.5097 20.0202 53.5097 30.7973C53.5097 41.5743 45.7634 50.8151 35.0926 52.7675" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path id="Path_5" fill-rule="evenodd" clip-rule="evenodd" d="M28.3514 23.4888L38.0604 29.1924C38.6313 29.5276 38.9814 30.1373 38.9814 30.796C38.9814 31.4546 38.6313 32.0643 38.0604 32.3995L28.3514 38.1031C27.7713 38.4437 27.0518 38.4492 26.4665 38.1175C25.8812 37.7857 25.52 37.1677 25.5202 36.4983V25.0936C25.52 24.4243 25.8812 23.8062 26.4665 23.4744C27.0518 23.1427 27.7713 23.1482 28.3514 23.4888Z" fill="white" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+<defs>
+<filter id="filter0_b_21_47" x="5" y="5" width="52" height="52" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feGaussianBlur in="BackgroundImageFix" stdDeviation="2"/>
+<feComposite in2="SourceAlpha" operator="in" result="effect1_backgroundBlur_21_47"/>
+<feBlend mode="normal" in="SourceGraphic" in2="effect1_backgroundBlur_21_47" result="shape"/>
+</filter>
+</defs>
+</svg>
