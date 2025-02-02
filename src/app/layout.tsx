@@ -25,7 +25,7 @@ export default function RootLayout({
         className={`${interSans.variable} antialiased bg-background w-screen max-h-screen overflow-hidden box-border`}
       >
         <div className="max-h-screen overflow-y-scroll">
-          <div className="max-w-mobile border mx-auto pt-10">
+          <div className="max-w-mobile md:border mx-auto pt-10">
             <Header/>
             {children}
             <Footer/>
