@@ -17,7 +17,16 @@ type Card<T> = {
   data?: T
 }
 
-export default function Slider() {
+type ScreenSize = {
+  width: number,
+  height: number
+}
+
+interface ScreenProps {
+  screenSize: ScreenSize 
+}
+
+export default function Screen({ screenSize }: ScreenProps) {
   const [screen, setScreen] = useState<HTMLDivElement | null>(null);
   const [isDragging, setIsDragging] = useState<boolean>(false);
   const [enableDrag, setEnableDrag] = useState<boolean>(true);
@@ -193,7 +202,7 @@ export default function Slider() {
  }
 
   return (
-    <div ref={ref} className="screen h-[calc(100vh-3.5rem)] overflow-hidden transition-transform">
+    <div ref={ref} className="screen overflow-hidden transition-transform" style={{ width: screenSize.width, height: screenSize.height }}>
       {cards.map((card, index) => 
         card.type === CardType.CONTENT ? 
         (<Video key={index} index={index} active={activeView === index}/>) :
