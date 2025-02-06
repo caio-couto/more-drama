@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client"
 
 import Video from "../Video";
@@ -195,7 +196,7 @@ export default function Slider() {
     <div ref={ref} className="screen h-[calc(100vh-3.5rem)] overflow-hidden transition-transform">
       {cards.map((card, index) => 
         card.type === CardType.CONTENT ? 
-        (<Video key={index} id={`${activeView} ${index}`} active={activeView === index}/>) :
+        (<Video key={index} index={index} active={activeView === index}/>) :
         (<NextEpisode handleClick={handleClick} key={index}/>)
       )}
     </div>
