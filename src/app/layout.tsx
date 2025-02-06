@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
 
 const interSans = Inter({
   variable: "--font-inter-sans",
@@ -22,14 +20,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${interSans.variable} antialiased bg-background w-screen max-h-screen overflow-hidden box-border`}
+        className={`${interSans.variable} antialiased bg-background w-screen min-h-screen box-border`}
       >
-        <div className="max-h-screen overflow-y-scroll">
-          <div className="max-w-mobile md:border mx-auto pt-10">
-            <Header/>
-            {children}
-            <Footer/>
-          </div>
+        <div className="max-w-mobile mx-auto min-h-screen flex flex-col">
+          {children}
         </div>
       </body>
     </html>

@@ -24,7 +24,7 @@ export default async function Footer() {
           </li>
         </ul>
       </div>
-      <div className="bg-primary py-5 pt-4 pb-12 text-xs text-center">
+      <div className="bg-primary py-5 px-4 text-xs text-center">
         © 2025 moremanaus is a registered trademark, maintained, and 
         owned by CNPJ: 23.558.894/0006-61 NETGROWTH - Internet 
         Portals and Providers Services LTD.

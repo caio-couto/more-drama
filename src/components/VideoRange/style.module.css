@@ -1,0 +1,18 @@
+.slider::-moz-range-thumb, .slider::-webkit-slider-thumb {
+  appearance: none;
+  visibility: hidden;
+}
+
+.control {
+  animation: blend 2s 1;
+  visibility: hidden;
+}
+
+@keyframes hidding {
+  0% {
+    visibility: visible;
+  }
+  100% {
+    visibility: hidden;
+  }
+}

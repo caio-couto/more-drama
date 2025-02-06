@@ -1,11 +1,12 @@
-"use server"
+import Advertising from "@/components/Advertising";
+import NovelCard from "@/components/NovelCard";
+import NovelEpisodes from "@/components/NovelEpisodes";
+import NovelResume from "@/components/NovelResume";
 
-import NovelCard from "../NovelCard";
-import NovelEpisodes from "../NovelEpisodes";
-import NovelResume from "../NovelResume";
-
-export default async function Novel() {
+export default function Novel() {
   return (
+    <>
+    <Advertising/>
     <div className="my-10">
       <NovelCard/>
       <div className="mx-4 mb-5">
@@ -66,5 +67,6 @@ export default async function Novel() {
         escondidas sob a fachada de uma bilionária inabalável.
       </NovelResume>
     </div>
+    </>
   );
-};
+}

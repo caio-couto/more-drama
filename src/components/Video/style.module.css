@@ -1,0 +1,13 @@
+.control {
+  animation: 2s ease-out hidding 2s 1;
+  visibility: visible;
+}
+
+@keyframes hidding {
+  0% {
+    visibility: visible;
+  }
+  100% {
+    visibility: hidden;
+  }
+}
