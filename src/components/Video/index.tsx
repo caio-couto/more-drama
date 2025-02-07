@@ -85,7 +85,7 @@ export default function Video({ index, active, videoUrl }: CardProps) {
 
       {active && (
         <div className="flex-1">
-        <video ref={videoRef} className="w-full h-full mx-auto object-cover" onPlaying={handlePlaying} onCanPlayThrough={handlePlayThrough} controls={false} preload="metadata" autoPlay={index !== 0} disablePictureInPicture playsInline>
+        <video ref={videoRef} className="w-full h-full mx-auto object-cover" onPlaying={handlePlaying} onPlay={handlePlaying} onLoadStart={handlePlayThrough} controls={false} preload="metadata" autoPlay={index !== 0} disablePictureInPicture playsInline>
           <source className="object-cover" src={videoUrl}/>
         </video>
       </div>)}
