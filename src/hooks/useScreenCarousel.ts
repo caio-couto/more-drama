@@ -1,33 +1,10 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-"use client"
-
-import Video from "../Video";
-import { useCallback, useEffect, useState, MouseEvent as ReactMouseEvent } from "react";
-import NextEpisode from "../NextEpisode";
+/* eslint-disable react-hooks/exhaustive-deps */
+import { useState, useCallback, useEffect, Dispatch, SetStateAction } from "react";
 
 const DRAG_RESISTANCE: number = 8;
 
-enum CardType {
-  CONTENT,
-  ADVERTISING
-}
-
-type Card<T> = {
-  type: CardType
-  data?: T
-}
-
-type ScreenSize = {
-  width: number,
-  height: number
-}
-
-interface ScreenProps {
-  screenSize: ScreenSize 
-}
-
-export default function Screen({ screenSize }: ScreenProps) {
-  const [screen, setScreen] = useState<HTMLDivElement | null>(null);
+export default function useScreenCarousel<T extends HTMLElement>(): [(refNode: T) => void, activeIndex: number, () => void, () => void, Dispatch<SetStateAction<boolean>>] {
+  const [screen, setScreen] = useState<T | null>(null);
   const [isDragging, setIsDragging] = useState<boolean>(false);
   const [enableDrag, setEnableDrag] = useState<boolean>(true);
   const [dragDistance, setDragDistance] = useState<number>(0);
@@ -36,32 +13,8 @@ export default function Screen({ screenSize }: ScreenProps) {
   const [scrollPosition, setScrollPosition] = useState<number>(0)
   const [activeView, setActiveView] = useState<number>(0);
 
-  const [cards, setCards] = useState<Card<string>[]>([{
-    type: CardType.CONTENT,
-    data: "blue"
-  }, {
-    type: CardType.ADVERTISING,
-  }, {
-    type: CardType.CONTENT,
-    data: "yellow"
-  }, {
-    type: CardType.ADVERTISING,
-  }, {
-    type: CardType.CONTENT,
-    data: "green"
-  }, {
-    type: CardType.ADVERTISING,
-  }, {
-    type: CardType.CONTENT,
-    data: "red"
-  }, {
-    type: CardType.ADVERTISING,
-  }, {
-    type: CardType.CONTENT,
-    data: "violet"
-  }]);
-
-  const ref = useCallback((refNode: HTMLDivElement) => {
+  // handle node (ref) init
+  const screenRef = useCallback((refNode: T) => {
     if (refNode) {
       setScreen(refNode);
     }
@@ -88,7 +41,7 @@ export default function Screen({ screenSize }: ScreenProps) {
       screen.addEventListener("mousemove", handleMouseMove);
     }
 
-    return function() {
+    return function () {
       if (screen) {
         screen.removeEventListener("mousedown", handleMouseDown);
         window.removeEventListener("mouseup", handleMouseUp);
@@ -108,7 +61,7 @@ export default function Screen({ screenSize }: ScreenProps) {
 
   function handleTouchMove(event: TouchEvent) {
     const newTouchPosition: number = event.changedTouches[0].clientY;
-    
+
     if (isDragging) {
       setDragDistance((distance) => distance + newTouchPosition - prevTouchPosition);
     }
@@ -117,20 +70,20 @@ export default function Screen({ screenSize }: ScreenProps) {
   }
 
   useEffect(() => {
-    if (screen) {
+    if (screen && enableDrag) {
       screen.addEventListener('touchstart', handleTouchStart);
       screen.addEventListener('touchend', handleTouchEnd);
       screen.addEventListener('touchmove', handleTouchMove);
     }
-    
-    return function() {
+
+    return function () {
       if (screen) {
         screen.removeEventListener('touchstart', handleTouchStart);
         window.removeEventListener('touchend', handleTouchEnd);
         screen.removeEventListener('touchmove', handleTouchMove);
       }
     };
-  }, [isDragging, screen, prevTouchPosition]);
+  }, [isDragging, screen, prevTouchPosition, enableDrag]);
 
   // Set Screen Height
   const getScreenHeight = useCallback(() => {
@@ -147,67 +100,62 @@ export default function Screen({ screenSize }: ScreenProps) {
     getScreenHeight();
     window.addEventListener("resize", handleResize);
 
-    return function() {
+    return function () {
       window.removeEventListener("resize", handleResize);
     }
   }, [getScreenHeight, screen]);
 
- const dragResistance: number = screenHeight / DRAG_RESISTANCE;
+  const dragResistance: number = screenHeight / DRAG_RESISTANCE;
 
- function scrollPositionCheck(position: number): number {
-  if (!screen) { return 0; }
+  function scrollPositionCheck(position: number): number {
+    if (!screen) { return 0; }
 
-  if (position <= 0) {
-    setActiveView(0);
-    return 0;
-  } else if (position >= screen.scrollHeight - screenHeight) {
-    setActiveView(Math.round(screen.scrollHeight - screenHeight) / screenHeight);
-    return screen.scrollHeight - screenHeight;
-  } else {
-    setActiveView(Math.round(position / screenHeight));
-    return position;
+    if (position <= 0) {
+      setActiveView(0);
+      return 0;
+    } else if (position >= screen.scrollHeight - screenHeight) {
+      setActiveView(Math.round(screen.scrollHeight - screenHeight) / screenHeight);
+      return screen.scrollHeight - screenHeight;
+    } else {
+      setActiveView(Math.round(position / screenHeight));
+      return position;
+    }
   }
- }
 
- useEffect(() => {  
-  if (isDragging) { return; }
-
-  if (-dragDistance > dragResistance) {
+  function next(): void {
     setScrollPosition((scrollPosition) => scrollPositionCheck(scrollPosition + screenHeight));
+  }
 
-    if (screen && activeView !== screen.childElementCount - 1) {
+  function prev(): void {
+    setScrollPosition((scrollPosition) => scrollPositionCheck(scrollPosition - screenHeight));
+  }
+
+  useEffect(() => {
+    if (isDragging) { return; }
+
+    if (-dragDistance > dragResistance) {
+      next();
+
+      if (screen && activeView !== screen.childElementCount - 1) {
+        setEnableDrag(false);
+      }
+    } else if (dragDistance > dragResistance) {
+      prev();
+
       setEnableDrag(false);
     }
-  } else if (dragDistance > dragResistance) {
-    setScrollPosition((scrollPosition) => scrollPositionCheck(scrollPosition - screenHeight));
-    
-    setEnableDrag(false);
-  }
-  setDragDistance(0);
- }, [isDragging, activeView]);
+    setDragDistance(0);
+  }, [isDragging, activeView]);
 
- useEffect(() => {
-  if (!screen) { return; }
+  useEffect(() => {
+    if (!screen) { return; }
 
-  if (isDragging) {
-    screen.scrollTo({ top: scrollPosition - dragDistance });
-  } else {
-    screen.scrollTo({ top: scrollPosition, behavior: "smooth" });
-  }
- }, [dragDistance, isDragging, screen, scrollPosition]);
+    if (isDragging) {
+      screen.scrollTo({ top: scrollPosition - dragDistance });
+    } else {
+      screen.scrollTo({ top: scrollPosition, behavior: "smooth" });
+    }
+  }, [dragDistance, isDragging, screen, scrollPosition]);
 
- function handleClick(_event: ReactMouseEvent<HTMLButtonElement>): void {
-  setScrollPosition((scrollPosition) => scrollPositionCheck(scrollPosition + screenHeight));
-  setEnableDrag(true);
- }
-
-  return (
-    <div ref={ref} className="screen overflow-hidden transition-transform" style={{ width: screenSize.width, height: screenSize.height }}>
-      {cards.map((card, index) => 
-        card.type === CardType.CONTENT ? 
-        (<Video key={index} index={index} active={activeView === index}/>) :
-        (<NextEpisode handleClick={handleClick} key={index}/>)
-      )}
-    </div>
-  );
+  return [screenRef, activeView, next, prev, setEnableDrag];
 }

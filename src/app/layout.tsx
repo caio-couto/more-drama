@@ -22,7 +22,7 @@ export default function RootLayout({
       <body
         className={`${interSans.variable} antialiased bg-background w-screen min-h-screen box-border`}
       >
-        <div className="max-w-mobile mx-auto min-h-screen flex flex-col">
+        <div className="mx-auto min-h-screen flex flex-col">
           {children}
         </div>
       </body>

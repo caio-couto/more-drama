@@ -69,16 +69,16 @@ export default function Video({ index, active, }: CardProps) {
   }
 
   return (
-    <div className="w-full h-full relative flex flex-col justify-between" onClick={handleClick}>
+    <div className={`w-full h-full relative flex flex-col justify-between`} onClick={handleClick}>
       {active && (
       <div className="flex-1">
-        <video ref={videoRef} className="w-full h-full object-cover" onPlaying={handlePlaying} controls={false} preload="none" autoPlay={index !== 0} disablePictureInPicture playsInline>
+        <video ref={videoRef} className="w-full h-full mx-auto object-cover" onPlaying={handlePlaying} controls={false} preload="none" autoPlay={index !== 0} disablePictureInPicture playsInline>
           <source className="object-cover" src={"https://videos.pexels.com/video-files/6752408/6752408-uhd_1440_2732_25fps.mp4"}/>
         </video>
       </div>)}
 
       <div className="absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2">
-        {isPaused ? (<Image src={VideoPauseSVG} width={48} height={48} alt="video puse icon"/>) : (<Image className={style.control} src={VideoPlaySVG} width={48} height={48} alt="video play icon"/>)}
+        {isPaused && (<Image src={VideoPauseSVG} width={48} height={48} alt="video puse icon"/>)}
       </div>
 
       <div className={isPaused ? "flex-1 w-11/12 absolute bottom-0  mx-4 pb-4 transition-all" : "w-full absolute bottom-0 transition-all"}>
