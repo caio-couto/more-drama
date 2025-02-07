@@ -111,7 +111,7 @@ export default function Video({ index, active, videoUrl }: CardProps) {
           </div>
         </div>
 
-        <div className={videoState === VideoState.STOPPED ? "fixed bottom-0 w-11/12 mx-4 pb-4 transition-all" : "w-fulltransition-all"}>
+        <div className={videoState === VideoState.STOPPED ? `bottom-0 w-11/12 mx-4 pb-4 transition-all` : "w-fulltransition-all"}>
           <div className={videoState === VideoState.STOPPED ? "h-4 flex items-center justify-center" : ""}>
             <div className={videoState === VideoState.STOPPED ? "relative w-full h-1 flex items-center bg-gray-300 transition-all" : "relative w-1-full h-1 flex items-center bg-gray-300 bottom-0 transition-all"}>
               <VideoRange durarion={duration} currentTime={currentTime} isPaused={videoState === VideoState.STOPPED} onChange={handleChange} onDragStart={handleEnableDrag} onDragEnd={handleDisableDrag}/>
