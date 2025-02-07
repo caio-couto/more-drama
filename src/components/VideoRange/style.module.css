@@ -1,4 +1,11 @@
-.slider::-moz-range-thumb, .slider::-webkit-slider-thumb {
+.slider::-moz-range-thumb {
+  -moz-appearance: none;
+  appearance: none;
+  visibility: hidden;
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
   appearance: none;
   visibility: hidden;
 }
