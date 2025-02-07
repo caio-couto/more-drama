@@ -1,18 +1,36 @@
 "use server"
 
-import NovelWEBP from "@public/novel.webp";
 import Image from "next/image";
 import Link from "next/link";
 
-export default async function NovelCard() {
+import NovelCardBorderPNG from "@public/novel-card-border.png";
+import VidePlaySVG from "@public/video-play.svg";
+
+interface NovelCardProps {
+  novelName: string,
+  novelSlug: string,
+  novelThumbUrl: string
+}
+
+export default async function NovelCard({ novelName, novelSlug, novelThumbUrl }: NovelCardProps) {
   return (
     <div className="mb-10">
       <div className="max-w-72 mx-auto text-2xl font-semibold text-center mb-4">
-        Não desafie a senhora Bilionária
+        {novelName}
       </div>
-      <Link href={"/"}>
-        <Image src={NovelWEBP} className="rounded-2xl mx-auto" alt="novel image" width={240} height={340} priority={true} quality={100}/>
-      </Link>
+      <div className="relative">
+        <Link className="" href={`/watch/${novelSlug}/0`}>
+          <div className="w-fit mx-auto z-10">
+            <Image src={novelThumbUrl} className="mx-auto" alt="novel image" width={220} height={300} priority={true} quality={100}/>
+            <div className="absolute w-[350px] -top-1.5 left-1/2 -translate-x-1/2">
+              <Image src={NovelCardBorderPNG} className="mx-auto" alt="novel card border" width={350} height={320}/>
+            </div>
+            <div className="absolute top-1/2 -translate-y-1/2 left-1/2 p-3 rounded-full bg-[#1818184d] -translate-x-1/2">
+              <Image src={VidePlaySVG} className="mx-auto" alt="novel card border" width={32} height={32}/>
+            </div>
+          </div>
+        </Link>
+      </div>
     </div>
   );
 }
