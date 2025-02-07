@@ -1,11 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import VideoRange from "../VideoRange";
 
-import VideoPlaySVG from "@public/video-play.svg";
 import VideoPauseSVG from "@public/video-pause.svg";
 import Image from "next/image";
-
-import style from "./style.module.css";
 
 interface CardProps {
   index: number,
