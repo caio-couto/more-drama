@@ -59,23 +59,17 @@ export default function Carousel({ slug, episodes }: CarouselProps) {
   
   useEffect(() => {
     changePathByCurrentCardId();
-  }, [cardIndex, cards]);
+  }, [cardIndex]);
 
-  function generateInfiniteScroll(): void {
-    if (!screen || cardIndex < screen.childElementCount - 1) { return; }
+  function generateInfiniteScroll(): void {    
+    if (!screen || cardIndex < episodes.length) { return; }     
 
     setCards((cards) => {
-      if (cards.length === 0 || !screen || cardIndex + 1 === screen.childElementCount ) { return cards; }
+      if (cards.length === 0) { return cards; }      
 
-      const lastCard: ListSlugEpisode | undefined = cards[cards.length - 2] ? cards[cards.length - 2].data : cards[cards.length - 1].data;
+      const startElement: number = episodes.indexOf(cards[cards.length - 2].data!);
 
-      if (!lastCard) { return cards; }
-
-      const startElement: number = episodes.indexOf(lastCard);
-
-      const newLastCard: ListSlugEpisode | undefined = cards[cards.length - 2 + PAGINATION] ? cards[cards.length - 2 + PAGINATION].data : undefined;
-
-      const endElement: number =  newLastCard ? episodes.indexOf(newLastCard) : -1;
+      const endElement: number =  cards.length / 2 + PAGINATION < episodes.length ?  episodes.indexOf(cards[cards.length - 2 + PAGINATION].data!) : -1;
 
       if (endElement === -1) {
         const shortCards: CarouselCard[] = [];
@@ -102,6 +96,7 @@ export default function Carousel({ slug, episodes }: CarouselProps) {
         
         shortCards.push({ type: CarouselCardType.ADVERTISING });
       }
+      
 
       return [...cards, ...shortCards];
     });
@@ -109,7 +104,7 @@ export default function Carousel({ slug, episodes }: CarouselProps) {
 
   useEffect(() => {
     generateInfiniteScroll();    
-  }, [screen, cardIndex, cards]);
+  }, [screen, cardIndex]);
 
   function disableDragInAdvertising(): void {
     if (!cards[cardIndex]) { return };
@@ -142,7 +137,7 @@ export default function Carousel({ slug, episodes }: CarouselProps) {
               </VideoContextProvider>) :
               (<NextEpisode handleClick={handleCLick}/>)}
             </Card>
-        )) }
+        ))}
       </div>
     </div>
   );
