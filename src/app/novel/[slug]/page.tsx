@@ -1,17 +1,68 @@
-import { ListNovelResponse } from "@/app/api/novel/[slug]/route";
 import Advertising from "@/components/Advertising";
 import NovelCard from "@/components/NovelCard";
 import NovelEpisodes from "@/components/NovelEpisodes";
 import NovelResume from "@/components/NovelResume";
+import { poolConnection } from "@/lib/database";
+import { episodesTable, novelsTable } from "@/lib/database/schema";
+import { asc, eq } from "drizzle-orm";
+
+interface StaticNovels {
+  slug: string
+}
+
+export function generateStaticParams(): Promise<StaticNovels[]> {
+  return new Promise((resolve, reject) => {
+    poolConnection
+    .select({
+      slug: novelsTable.slug
+    })
+    .from(novelsTable)
+    .then((novels: StaticNovels[]) => { resolve(novels); })
+    .catch((error) => { reject(error); });
+  });
+}
+
+export type ListNovel = {
+  id: number,
+  name: string,
+  slug: string,
+  description: string,
+  thumbnailUlr: string | null
+};
+
+export type ListEpisode = {
+  episode: number,
+  slug: string
+}
+
+export interface ListNovelResponse {
+  novel: ListNovel,
+  episodes: ListEpisode[]
+}
 
 async function getNovel(novelSlug: string): Promise<ListNovelResponse> {
-  return new Promise<ListNovelResponse>((resolve, reject) => {
-    fetch(`${process.env.APP_URL}/api/novel/${novelSlug}`)
-    .then((data) => data.json())
-    .then((data: ListNovelResponse) => {
-      resolve(data);
-    })
-    .catch((error) => reject(error));
+  return new Promise<ListNovelResponse>( async (resolve, reject) => {
+    const novel: ListNovel[] = await poolConnection
+      .select({
+        id: novelsTable.id,
+        name: novelsTable.name,
+        slug: novelsTable.slug,
+        description: novelsTable.description,
+        thumbnailUlr: novelsTable.thumbnailUrl
+      })
+      .from(novelsTable)
+      .where(eq(novelsTable.slug, novelSlug));
+
+    const episodes: ListEpisode[] = await poolConnection
+      .select({
+        episode: episodesTable.episode,
+        slug: episodesTable.slug
+       })
+      .from(episodesTable)
+      .orderBy(asc((episodesTable.episode)), asc(episodesTable.season))
+      .where((eq(episodesTable.novelId, novel[0].id)));
+
+      resolve({ novel: novel[0], episodes });
   });
 }
 
@@ -23,8 +74,6 @@ export default async function Novel({ params }: NovelProps) {
   const { slug } = await params;
 
   const { novel, episodes }: ListNovelResponse = await getNovel(slug);
-
-  console.log(novel, episodes);
 
   return (
     <>

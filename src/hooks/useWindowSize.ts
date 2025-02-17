@@ -17,9 +17,16 @@ const MAX_SCREEN_WIDTH: number = 390;
 const MAX_SCREEN_HEIGHT: number = 844;
 
 export default function useWindowSize(): WindowSize {
-  const windowSize = useSyncExternalStore<WindowSize>(subscribe, getSnapshot, undefined);
+  const windowSize = useSyncExternalStore<WindowSize>(subscribe, getSnapshot, getServerSnapshot);
 
   return windowSize;
+}
+
+function getServerSnapshot(): WindowSize {
+  return {
+    width: MAX_SCREEN_WIDTH,
+    height: MAX_SCREEN_HEIGHT
+  };
 }
 
 function getSnapshot(): WindowSize {

@@ -1,15 +1,43 @@
 import { ListSlugEpisode, ListEpisodeSlugResponse } from "@/app/api/episode/[slug]/route";
 import Carousel from "@/components/Carousel";
 import CarouselHeader from "@/components/CarouselHeader";
+import { poolConnection } from "@/lib/database";
+import { episodesTable, novelsTable } from "@/lib/database/schema";
+import { asc, eq, or } from "drizzle-orm";
 
-async function getEpisodesBySlug(novelSlug: string): Promise<ListSlugEpisode[]> {
-  return new Promise<ListSlugEpisode[]>((resolve, reject) => {
-    fetch(`${process.env.APP_URL}/api/episode/${novelSlug}`)
-    .then((data) => data.json())
-    .then((data: ListEpisodeSlugResponse) => {
-      resolve(data.episodes);
+interface StaticEpisodes {
+  slug: string
+}
+
+export function generateStaticParams(): Promise<StaticEpisodes[]> {
+  return new Promise((resolve, reject) => {
+    poolConnection
+    .select({
+      slug: episodesTable.slug
     })
+    .from(episodesTable)
+    .then((episodes: StaticEpisodes[]) => { resolve(episodes) })
     .catch((error) => reject(error));
+  });
+}
+
+async function getEpisodesBySlug(episodeSlug: string): Promise<ListSlugEpisode[]> {
+  return new Promise<ListSlugEpisode[]>(async (resolve, reject) => {
+    poolConnection
+    .select({
+      id: episodesTable.id,
+      name: episodesTable.name,
+      slug: episodesTable.slug,
+      episode: episodesTable.episode,
+      thumbnailUrl: episodesTable.thumbnailUrl,
+      videoUrl: episodesTable.videoUrl,
+      novelId: episodesTable.novelId
+    })
+    .from(episodesTable)
+    .innerJoin(novelsTable, eq(episodesTable.novelId, novelsTable.id))
+    .orderBy(asc(episodesTable.episode))
+    .where(or(eq(episodesTable.slug, episodeSlug), eq(episodesTable.novelId, novelsTable.id)))
+    .then((episodes: ListSlugEpisode[]) => { resolve(episodes); });
   });
 }
 
