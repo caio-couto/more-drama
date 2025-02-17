@@ -4,11 +4,10 @@ import useWindowSize, { WindowSize } from "@/hooks/useWindowSize";
 
 interface CardProps {
   hidden: boolean,
-  active: boolean,
   children: React.ReactNode
 } 
 
-export default function Card({ hidden, active, children }: Readonly<CardProps>) {
+export default function Card({ hidden, children }: Readonly<CardProps>) {
   const windowSize: WindowSize = useWindowSize();
 
   return (

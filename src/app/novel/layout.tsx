@@ -7,12 +7,12 @@ export default function NovelLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <>
+    <body>
       <Header/>
-        <main className="">
-        {children}
-        </main>
+      <main className="w-full md:w-mobile-screen-w md:mx-auto h-full">
+      {children}
+      </main>
       <Footer/>
-    </>
+    </body>
   );
 }

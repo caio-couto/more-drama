@@ -6,12 +6,19 @@ import useWindowSize, { WindowSize } from "./useWindowSize";
 
 const DRAG_RESISTANCE: number = 6;
 
-export default function useCarousel<T extends HTMLElement>(): [(refNode: T) => void, screen: T | null, cardIndex: number, () => void, () => void, Dispatch<SetStateAction<boolean>>] {
+export default function useCarousel<T extends HTMLElement>(): [(refNode: T) => void, (refNode: T) => void, screen: T | null, cardIndex: number, () => void, () => void, handleEnbleDrag: (value: boolean) => void] {
   const [screen, setScreen] = useState<T | null>(null);
+  const [slideScreen, setSlideScreen] = useState<T | null>(null);
 
   const screenRef = useCallback((refNode: T) => {
     if (refNode) {
       setScreen(refNode);
+    }
+  }, []);
+
+  const slideScreenRef = useCallback((refNode: T) => {
+    if (refNode) {
+      setSlideScreen(refNode);
     }
   }, []);
 
@@ -21,6 +28,10 @@ export default function useCarousel<T extends HTMLElement>(): [(refNode: T) => v
   const [isDragging, setIsDragging] = useState<boolean>(false);
   const [dragDistance, setDragDistance] = useState<number>(0);
   const [touchDistance, setTouchDistance] = useState<number>(0);
+
+  function handleEnbleDrag(value: boolean): void {
+    setEnableDrag(value);
+  }
 
   function translateSlide(position: number): void {
     if (!screen) { return; }
@@ -50,10 +61,14 @@ export default function useCarousel<T extends HTMLElement>(): [(refNode: T) => v
   }
 
   function nextSlide(): void {
+    if (!screen || currentSlideIndex + 1 === screen.childElementCount) { return; }
+
     setVisibleSlide(currentSlideIndex + 1);
   }
 
   function prevSlide(): void {
+    if (!screen || currentSlideIndex === 0) { return; }
+
     setVisibleSlide(currentSlideIndex - 1);
   }
 
@@ -73,20 +88,20 @@ export default function useCarousel<T extends HTMLElement>(): [(refNode: T) => v
 
   // handle mouse event listeners
   useEffect(() => {
-    if (screen) {
-      screen.addEventListener("mousedown", handleMouseDown);
+    if (slideScreen) {
+      slideScreen.addEventListener("mousedown", handleMouseDown);
       window.addEventListener("mouseup", handleMouseUp);
-      screen.addEventListener("mousemove", handleMouseMove);
+      slideScreen.addEventListener("mousemove", handleMouseMove);
     }
 
     return function () {
-      if (screen) {
-        screen.removeEventListener("mousedown", handleMouseDown);
+      if (slideScreen) {
+        slideScreen.removeEventListener("mousedown", handleMouseDown);
         window.removeEventListener("mouseup", handleMouseUp);
-        screen.removeEventListener("mousemove", handleMouseMove);
+        slideScreen.removeEventListener("mousemove", handleMouseMove);
       }
     }
-  }, [isDragging, screen]);
+  }, [isDragging, slideScreen]);
 
   function handleTouchStart(event: TouchEvent): void {
     setTouchDistance(event.touches[0].clientY);
@@ -94,6 +109,7 @@ export default function useCarousel<T extends HTMLElement>(): [(refNode: T) => v
   }
 
   function handleTouchEnd(): void {
+    if (!isDragging) { return; }
     setIsDragging(false);
   }
 
@@ -109,20 +125,20 @@ export default function useCarousel<T extends HTMLElement>(): [(refNode: T) => v
 
   // handle touch event listeners
   useEffect(() => {
-    if (screen) {
-      screen.addEventListener('touchstart', handleTouchStart);
-      screen.addEventListener('touchend', handleTouchEnd);
-      screen.addEventListener('touchmove', handleTouchMove);
+    if (slideScreen) {
+      slideScreen.addEventListener('touchstart', handleTouchStart);
+      slideScreen.addEventListener('touchend', handleTouchEnd);
+      slideScreen.addEventListener('touchmove', handleTouchMove);
     }
 
     return function () {
-      if (screen) {
-        screen.removeEventListener('touchstart', handleTouchStart);
+      if (slideScreen) {
+        slideScreen.removeEventListener('touchstart', handleTouchStart);
         window.removeEventListener('touchend', handleTouchEnd);
-        screen.removeEventListener('touchmove', handleTouchMove);
+        slideScreen.removeEventListener('touchmove', handleTouchMove);
       }
     };
-  }, [isDragging, screen, touchDistance]);
+  }, [isDragging, slideScreen, touchDistance]);
 
   useEffect(() => {
     if (!screen || !enableDrag) { return; }
@@ -141,7 +157,7 @@ export default function useCarousel<T extends HTMLElement>(): [(refNode: T) => v
     const dragResistance: number = windowSize.height / DRAG_RESISTANCE;
 
     if (-dragDistance > dragResistance) {
-      nextSlide()
+      nextSlide();
     } else if (dragDistance > dragResistance) {
       prevSlide();
     }
@@ -149,5 +165,5 @@ export default function useCarousel<T extends HTMLElement>(): [(refNode: T) => v
     setDragDistance(0);
   }, [isDragging, currentSlideIndex]);
 
-  return [screenRef, screen, currentSlideIndex, nextSlide, prevSlide, setEnableDrag]
+  return [screenRef, slideScreenRef, screen, currentSlideIndex, nextSlide, prevSlide, handleEnbleDrag] as const
 }

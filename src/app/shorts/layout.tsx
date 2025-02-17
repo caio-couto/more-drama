@@ -1,16 +1,14 @@
 "use client"
 
-import Header from "@/components/header";
+import Image from "next/image";
+import CarouselPlacehoulderPNG from "@public/carousel-placehoulder.png";
 
 export default function ShortsLayout({ children }: Readonly<{ children: React.ReactNode; }>) {
   return (
-    <div className="relative">
-      <Header/>
-      <div className="fixed top-0 left-0 right-0 bottom-0 pb-0">
-        <div className="w-full h-full">
+    <body className="overflow-hidden md:overflow-auto md:w-screen md:h-screen">
+      <div className="shorts bg-transparent fixed md:relative bg-red-600 top-0 right-0 left-0 w-full h-full">
         {children}
-        </div>
       </div>
-    </div>
+    </body>
   );
 }

@@ -1,0 +1,23 @@
+services:
+  database:
+    container_name: mysql-db
+    image: mysql:8.4.4
+    restart: unless-stopped
+    volumes:
+      - ./data/mysql/data:/var/lib/mysql
+      - ./data/mysql/conf:/etc/mysql/conf.d
+    ports:
+     - 3306:3306
+    env_file: ".env"
+    environment:
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+    healthcheck:
+      test: mysqladmin ping -h 127.0.0.1 -u $$MYSQL_USER --password=$$MYSQL_PASSWORD
+      start_period: 5s
+      interval: 5s
+      timeout: 5s
+      retries: 55
+    

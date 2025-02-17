@@ -5,9 +5,35 @@ import style from "./style.module.css";
 import { VideoContextValues, VideoStates } from "@/Context/Video/types";
 import useVideoContext from "@/Context/Video/VideoContext";
 
-export default function VideoPlayback() {
+interface VideoPlaybackProps {
+  active: boolean,
+  videoUrl: string | null,
+  postUrl: string | null
+}
+
+export default function VideoPlayback({ active, videoUrl, postUrl }: VideoPlaybackProps) {
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const videoContext: VideoContextValues = useVideoContext();
+
+  useEffect(() => {
+    if (!videoRef) { return; }
+
+    function pauseVideoWhenBlurWindow(): void {
+      videoContext.setVideoState(VideoStates.STOPPED);
+    }
+
+    function playVideoWhenFocusWindow(): void {
+      videoContext.setVideoState(VideoStates.PLAYING);
+    }
+
+    window.addEventListener("blur", () => pauseVideoWhenBlurWindow());
+    window.addEventListener("focus", () => playVideoWhenFocusWindow());
+
+    return function() {
+      window.removeEventListener("blur", () => pauseVideoWhenBlurWindow());
+      window.removeEventListener("focus", () => playVideoWhenFocusWindow());
+    };
+  }, [videoRef]);
 
   useEffect(() => {
     if (!videoRef.current) { return; }
@@ -23,6 +49,10 @@ export default function VideoPlayback() {
         videoContext.setCurrentTime(videoRef.current.currentTime);
       }
     }, 100);
+
+    if (videoContext.currentTime === videoContext.duration) {
+      videoContext.setVideoState(VideoStates.STOPPED);
+    }
     
     return function() { 
       return clearInterval(interval);
@@ -32,10 +62,8 @@ export default function VideoPlayback() {
   function pausePlayInactiveVideo() {
     if (!videoRef.current) { return; }
 
-    if (videoContext.isActive) {
-      videoContext.setVideoState(VideoStates.PLAYING);
-
-      return;
+    if (active) {
+      return videoContext.setVideoState(VideoStates.PLAYING);
     }
 
     videoContext.setVideoState(VideoStates.STOPPED);
@@ -43,13 +71,15 @@ export default function VideoPlayback() {
 
   useEffect(() => {
     pausePlayInactiveVideo();
-  }, [videoContext.isActive]);
+  }, [active]);
 
   function handlePlayerState(): void {
     if (!videoRef.current) { return; }
 
     switch (videoContext.videoState) {
       case VideoStates.PLAYING: {
+        if (!active) { return; }
+
         videoRef.current.play()
         .catch(() => {
           videoContext.setVideoState(VideoStates.NOT_STARTED)
@@ -65,7 +95,7 @@ export default function VideoPlayback() {
 
   useEffect(() => {
     handlePlayerState();
-  }, [videoContext.videoState]);
+  }, [videoContext.videoState, active]);
 
   function handleLoadStart(): void {
     videoContext.setVideoState(VideoStates.LOADING);
@@ -93,8 +123,9 @@ export default function VideoPlayback() {
         preload="metadata" 
         disablePictureInPicture 
         playsInline
-        poster="https://www.videoplaceholder.com/static/BigBuckBunny-4979b146b7d4a6c16ae8badfe426fb6e.jpg">
-        <source className="object-cover" src={"https://storage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"} type="video/mp4"/>
+        autoPlay={false}
+        poster={postUrl ?? "https://www.videoplaceholder.com/static/BigBuckBunny-4979b146b7d4a6c16ae8badfe426fb6e.jpg"}>
+        <source className="object-cover" src={videoUrl ?? "https://storage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"} type="video/mp4"/>
       </video>
     </div>
   );

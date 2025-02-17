@@ -12,6 +12,10 @@ const windowSize: WindowSize = {
   height: 0
 }
 
+const BREAK_POINT: number = 540;
+const MAX_SCREEN_WIDTH: number = 390;
+const MAX_SCREEN_HEIGHT: number = 844;
+
 export default function useWindowSize(): WindowSize {
   const windowSize = useSyncExternalStore<WindowSize>(subscribe, getSnapshot, undefined);
 
@@ -20,8 +24,8 @@ export default function useWindowSize(): WindowSize {
 
 function getSnapshot(): WindowSize {
   if (windowSize.width !== window.innerWidth || windowSize.height !== window.innerHeight) {
-    windowSize.width = window.innerWidth;
-    windowSize.height = window.innerHeight;
+    windowSize.width = window.innerWidth < BREAK_POINT ? window.innerWidth : MAX_SCREEN_WIDTH;
+    windowSize.height = window.innerWidth < BREAK_POINT ? window.innerHeight : MAX_SCREEN_HEIGHT;
 
     return windowSize;
   }

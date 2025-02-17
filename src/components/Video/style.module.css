@@ -2,12 +2,17 @@
   display: none;
 }
 
+.controls {
+  background: -webkit-linear-gradient(bottom,rgba(0,0,0,.4) 0,rgba(0,0,0,0) 160px),-webkit-linear-gradient(top,rgba(0,0,0,.4) 0,rgba(0,0,0,0) 96px);
+  background: linear-gradient(to top,rgba(0,0,0,.4) 0,rgba(0,0,0,0) 160px),linear-gradient(to bottom,rgba(0,0,0,.4) 0,rgba(0,0,0,0) 96px);
+}
+
 .slider {
   font-size: 1.5rem;
 }
 
 .slider {
-  --thumb-height: 1.125em;
+  --thumb-height: 0.75em;
   --track-height: 0.25em;
   --track-color: #1f29376b;
   --brightness-hover: 180%;

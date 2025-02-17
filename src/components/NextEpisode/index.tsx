@@ -8,7 +8,7 @@ interface NextEpisodeProps {
 
 export default function NextEpisode({ handleClick  }: NextEpisodeProps) {
   return (
-    <div className="w-full h-full">
+    <div className="w-full h-full pt-6 bg-black">
       <Advertising/>
       <div className="py-5 px-4">
         <h2>What is Lorem Ipsum</h2>

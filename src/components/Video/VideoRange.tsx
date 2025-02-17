@@ -1,7 +1,8 @@
-import { ChangeEvent, MouseEvent, TouchEvent, useContext, useEffect, useState } from "react";
+import { ChangeEvent, MouseEvent, TouchEvent, useEffect, useState } from "react";
 
 import style from "./style.module.css";
-import { VideoContextValues, VideoStates } from "@/Context/Video/types";
+
+import { VideoContextValues } from "@/Context/Video/types";
 import useVideoContext from "@/Context/Video/VideoContext";
 
 export default function VideoRange() {
@@ -47,25 +48,20 @@ export default function VideoRange() {
   }
 
   function handleTouchEnd(event: TouchEvent<HTMLInputElement>): void {
-    console.log("touch end")
     disableDrag(parseFloat(event.currentTarget.value));
   }
 
   return (
-    <div className={"bottom-0 w-11/12 mx-4 my-2"}>
-      <div className={"h-4 flex items-center justify-center"}>
-          <div className={"relative flex-1"}>
-            <input type="range" className={`relative ${style.slider} w-full h-3 bg-transparent appearance-none overflow-hidden text-blue-600 cursor-pointer`} 
-            onChange={handleChange} 
-            onMouseDown={handleMouseDown} 
-            onTouchStart={handleTouchSatart} 
-            onMouseUp={handleMouseUp} 
-            onTouchEnd={handleTouchEnd} 
-            min={0} 
-            max={videoContext.duration} 
-            value={videoContext.currentTime}/>
-          </div>
-      </div>
+    <div className={"relative flex-1"}>
+      <input type="range" className={`relative ${style.slider} w-full h-2 bg-transparent appearance-none overflow-hidden text-primary cursor-pointer`} 
+      onChange={handleChange} 
+      onMouseDown={handleMouseDown} 
+      onTouchStart={handleTouchSatart} 
+      onMouseUp={handleMouseUp} 
+      onTouchEnd={handleTouchEnd} 
+      min={0} 
+      max={Math.round(videoContext.duration)} 
+      value={Math.round(videoContext.currentTime)}/>
     </div>
   );
 }

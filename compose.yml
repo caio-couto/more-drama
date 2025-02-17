@@ -1,0 +1,61 @@
+services:
+  application:
+    container_name: next-app
+    build:
+      context: .
+    restart: unless-stopped
+    ports: 
+      - 3003:3000
+    env_file:
+      - ./.env
+    environment:
+      TZ: America/Bahia
+    depends_on:
+      database:
+        condition: service_healthy
+    networks:
+      - production
+
+  visualizer:
+    container_name: phpmyadmin
+    image: phpmyadmin:5.2.2-fpm-alpine
+    restart: unless-stopped
+    ports:
+      - 3002:80
+    environment:
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      TZ: America/Bahia
+    depends_on:
+      database:
+        condition: service_healthy
+    networks:
+      - production
+
+  database:
+    container_name: mysql-db
+    image: mysql:8.4.4
+    restart: unless-stopped
+    volumes:
+      - ./data/mysql/data:/var/lib/mysql
+      - ./data/mysql/conf:/etc/mysql/conf.d
+    ports:
+     - 3306:3306
+    environment:
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+    healthcheck:
+      test: ["CMD", "mysql", "-h", "db", "-u", "root", "-p${MYSQL_ROOT_PASSWORD}", "-e", "SELECT 1;"]
+      interval: 4s
+      timeout: 10s
+      retries: 10
+    networks:
+      - production
+
+networks: 
+  production:
+    driver: bridge
+
+    

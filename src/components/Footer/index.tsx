@@ -4,7 +4,7 @@ import Link from "next/link";
 
 export default async function Footer() {
   return (
-    <>
+    <footer className="w-full md:w-mobile-screen-w md:mx-auto">
       <div className="bg-background-secondary">
         <ul className="flex justify-between py-5 px-4 text-xs">
           <li>
@@ -29,6 +29,6 @@ export default async function Footer() {
         owned by CNPJ: 23.558.894/0006-61 NETGROWTH - Internet 
         Portals and Providers Services LTD.
       </div>
-    </>
+    </footer>
   );
 }

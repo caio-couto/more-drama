@@ -3,6 +3,7 @@ import Image from "next/image";
 import VideoLoadingSVG from "@public/video-loading.svg";
 import VideoPauseSVG from "@public/video-pause.svg";
 import VideoPlaySVG from "@public/video-play.svg";
+import VideoRestartSVG from "@public/video-restart.svg";
 
 import { VideoContextValues, VideoStates } from "@/Context/Video/types";
 import useVideoContext from "@/Context/Video/VideoContext";
@@ -16,7 +17,7 @@ export default function VideoControl() {
       (
         <div className="bg-gray-800 bg-opacity-40 p-3 rounded-2xl">
           <div className="animate-spin">
-            <Image src={VideoLoadingSVG} alt="video loading icon" width={32} height={32}/>
+            <Image src={VideoLoadingSVG} alt="video loading icon" width={42} height={42}/>
           </div>
         </div>
       ):
@@ -24,6 +25,12 @@ export default function VideoControl() {
       (
         <div className="bg-gray-800 bg-opacity-40 p-3 rounded-2xl">
           <Image src={VideoPlaySVG} alt="video play icon" width={32} height={32}/>
+        </div>
+      ):
+      videoContext.videoState === VideoStates.STOPPED && videoContext.currentTime === videoContext.duration ?
+      (
+        <div className="bg-gray-800 bg-opacity-40 p-3 rounded-2xl">
+          <Image src={VideoRestartSVG} alt="video pause icon" width={42} height={42}/>
         </div>
       ):
       videoContext.videoState === VideoStates.STOPPED ?
