@@ -1,19 +1,19 @@
 "use client"
 
-import { ListSlugEpisode } from "@/app/api/episode/[slug]/route";
 import VideoContextProvider from "@/Context/Video/VideoContextProvider";
 import useCarousel from "@/hooks/useCarousel";
 import { useState, useEffect } from "react";
 import Card from "../Card";
 import Video from "../Video";
 import NextEpisode from "../NextEpisode";
+import { Episode, Novel } from "@/app/shorts/[slug]/page";
 
 const PAGINATION: number = 4;
-const PAGINATION_OFFSET: number = 0;
 
 interface CarouselProps {
   slug: string,
-  episodes: ListSlugEpisode[]
+  novel: Novel
+  episodes: Episode[]
 }
 
 enum CarouselCardType {
@@ -23,17 +23,17 @@ enum CarouselCardType {
 
 interface CarouselCard {
   type: CarouselCardType,
-  data?: ListSlugEpisode
+  data?: Episode
 }
 
-export default function Carousel({ slug, episodes }: CarouselProps) {
+export default function Carousel({ slug, novel, episodes }: CarouselProps) {
   const [cards, setCards] = useState<CarouselCard[]>([]);
   const [paginationOffset, setPaginationOffset] = useState<number>(1);
   const [screenRef, slideScreenRef, screen, cardIndex, nextSlide, prevSlide, setEnableDrag] = useCarousel<HTMLDivElement>();
 
   function generateCards(): void {
     const shortIndex: number = episodes.findIndex((episode) => episode.slug === slug);
-    const shortsSlice: ListSlugEpisode[] = episodes.slice(shortIndex, PAGINATION < episodes.length - shortIndex ? shortIndex + PAGINATION : undefined);
+    const shortsSlice: Episode[] = episodes.slice(shortIndex, PAGINATION < episodes.length - shortIndex ? shortIndex + PAGINATION : undefined);
     
     const shortCards: CarouselCard[] = [];
     
@@ -130,7 +130,7 @@ export default function Carousel({ slug, episodes }: CarouselProps) {
                   <Video slideScreenRef={slideScreenRef} active={cardIndex === index} videoUrl={card.data!.videoUrl} postUrl={card.data!.thumbnailUrl}/>
                 </>
               </VideoContextProvider>) :
-              (<NextEpisode handleClick={handleCLick}/>)}
+              (<NextEpisode novel={novel} handleClick={handleCLick}/>)}
             </Card>
         ))}
       </div>

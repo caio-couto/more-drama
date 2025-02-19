@@ -6,12 +6,13 @@ import EpisodesListSVG from "@public/episodes-list.svg";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
+import { Novel } from "@/app/shorts/[slug]/page";
 
 interface HeaderProps {
-  episodeSlug: string
+  novel: Novel;
 }
 
-export default function Header() {
+export default function Header({ novel }: Readonly<HeaderProps>) {
   const [openMenu, setOpenMenu] = useState<boolean>(false);
 
   function handleOpenMenu(): void {
@@ -34,7 +35,7 @@ export default function Header() {
       { openMenu && (
       <div className="absolute right-4 top-16 min-w-40 bg-gray-800 bg-opacity-40 border border-gray-600 border-opacity-40 rounded">
         <ul>
-          <Link href={""}>
+          <Link href={`/novel/${novel.slug}`}>
             <li className="p-4 text-nowrap">
               <Image className="inline mr-2" src={EpisodesListSVG} alt="window icon" width={24} height={24}/>
               <p className="inline font-semibold">Lista de Episódios</p>
