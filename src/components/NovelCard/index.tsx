@@ -13,7 +13,6 @@ interface NovelCardProps {
 }
 
 export default async function NovelCard({ novelName, episodeSlug, novelThumbUrl }: NovelCardProps) {
-  console.log(novelThumbUrl);
   return (
     <div className="mb-10">
       <div className="max-w-72 mx-auto text-2xl font-semibold text-center mb-4">
