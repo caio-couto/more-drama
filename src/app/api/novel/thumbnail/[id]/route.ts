@@ -68,7 +68,7 @@ export async function PATCH(req: NextRequest, reqParams: MediaParams): Promise<N
 
     const updateNovel = poolConnection.update(novelsTable)
       .set({
-        thumbnailUrl: `https://more-drama.s3.us-east-1.amazonaws.com/${fileName}`
+        thumbnailUrl: `https://d310rh8f423q4b.cloudfront.net/${fileName}`
       })
       .where(eq(novelsTable.id, parseInt(novelId)));
 
