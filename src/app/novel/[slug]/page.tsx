@@ -2,7 +2,7 @@ import Advertising from "@/components/Advertising";
 import NovelCard from "@/components/NovelCard";
 import NovelEpisodes from "@/components/NovelEpisodes";
 import NovelResume from "@/components/NovelResume";
-import { poolConnection } from "@/lib/database";
+import { poolConnection } from "@/lib/database/connection";
 import { episodesTable, novelsTable } from "@/lib/database/schema";
 import { asc, eq } from "drizzle-orm";
 

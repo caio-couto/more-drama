@@ -1,32 +1,32 @@
-import { poolConnection } from "@/lib/database";
+import { poolConnection } from "@/lib/database/connection";
 import { novelsTable } from "@/lib/database/schema";
-import { eq } from "drizzle-orm";
 import { NextRequest, NextResponse } from "next/server";
 
-export type ListNovelSlugs = {
-  slug: string
-};
+export type ListNovel = Omit<typeof novelsTable.$inferSelect, "id" | "createdAt" | "updatedAt">;
 
-export interface ListNovelSlugsResponse {
-  novels: ListNovelSlugs[]
+export interface ListNovelResponse {
+  novels: ListNovel[]
 }
 
-interface ListNovelSlugsError {
+interface ListNovelError {
   message: string,
   status: number
 }
 
-export async function GET(req: NextRequest): Promise<NextResponse<ListNovelSlugsResponse | ListNovelSlugsError>> {
+export async function GET(req: NextRequest): Promise<NextResponse<ListNovelResponse | ListNovelError>> {
   try {
-    const novels: ListNovelSlugs[] = await poolConnection
+    const novels: ListNovel[] = await poolConnection
       .select({
-        slug: novelsTable.slug
+        name: novelsTable.name,
+        slug: novelsTable.slug,
+        thumbnailUrl: novelsTable.thumbnailUrl,
+        description: novelsTable.description
       })
       .from(novelsTable);
 
-    return NextResponse.json<ListNovelSlugsResponse>({ novels });
+    return NextResponse.json<ListNovelResponse>({ novels });
   } catch (error) {
-    return NextResponse.json<ListNovelSlugsError>({
+    return NextResponse.json<ListNovelError>({
       message: (error as Error).message,
       status: 500
     }, { status: 500 });
@@ -83,38 +83,6 @@ export async function POST(req: NextRequest): Promise<NextResponse<SaveNovelResp
 
   } catch (error) {
     return NextResponse.json<SaveNovelError>({
-      message: (error as Error).message,
-      status: 500
-    }, { status: 500 });
-  }
-}
-
-interface DeleteNovelResponse {
-  status: number
-}
-
-interface DeleteNovelError {
-  message: string,
-  status: number
-}
-
-export async function DELETE(req: NextRequest): Promise<NextResponse<DeleteNovelResponse | DeleteNovelError>> {
-  const novelId: string | null = req.nextUrl.searchParams.get("novelId");
-
-  if (!novelId) {
-    return NextResponse.json<DeleteNovelError>({
-      message: "the novel ID param is invalid or not provided",
-      status: 400
-    }, { status: 400 });
-  }
-
-  try {
-    const deleteNovel = await poolConnection.delete(novelsTable)
-      .where(eq(novelsTable.id, parseInt(novelId)));
-
-    return NextResponse.json<DeleteNovelResponse>({ status: 200 }, { status: 200 });
-  } catch (error) {
-    return NextResponse.json<DeleteNovelError>({
       message: (error as Error).message,
       status: 500
     }, { status: 500 });

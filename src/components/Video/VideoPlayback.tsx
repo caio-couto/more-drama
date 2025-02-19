@@ -125,7 +125,7 @@ export default function VideoPlayback({ active, videoUrl, postUrl }: VideoPlayba
         playsInline
         autoPlay={false}
         poster={postUrl ?? "https://www.videoplaceholder.com/static/BigBuckBunny-4979b146b7d4a6c16ae8badfe426fb6e.jpg"}>
-        <source className="object-cover" src={videoUrl ?? "https://storage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"} type="video/mp4"/>
+        {videoUrl && (<source className="object-cover" src={videoUrl} type="video/webm"/>)}
       </video>
     </div>
   );

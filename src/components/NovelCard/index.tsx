@@ -13,8 +13,7 @@ interface NovelCardProps {
 }
 
 export default async function NovelCard({ novelName, episodeSlug, novelThumbUrl }: NovelCardProps) {
-  console.log(novelThumbUrl)
-
+  console.log(novelThumbUrl);
   return (
     <div className="mb-10">
       <div className="max-w-72 mx-auto text-2xl font-semibold text-center mb-4">
@@ -22,7 +21,7 @@ export default async function NovelCard({ novelName, episodeSlug, novelThumbUrl 
       </div>
       <div className="relative">
         <Link className="" href={`/shorts/${episodeSlug}`}>
-          <div className="w-fit mx-auto z-10">
+          <div className="min-w-[350px] min-h-[320px] mx-auto z-10">
             { novelThumbUrl && (<Image src={novelThumbUrl} className="mx-auto" alt="novel image" width={220} height={300} priority={true} quality={100}/>)}
             <div className="absolute w-[350px] -top-1.5 left-1/2 -translate-x-1/2">
               <Image src={NovelCardBorderPNG} className="mx-auto" alt="novel card border" width={350} height={320}/>

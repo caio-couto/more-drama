@@ -2,19 +2,19 @@
 
 import { useSyncExternalStore } from "react";
 
+const BREAK_POINT: number = 540;
+const MAX_SCREEN_WIDTH: number = 390;
+const MAX_SCREEN_HEIGHT: number = 844;
+
 export interface WindowSize {
   width: number,
   height: number
 }
 
 const windowSize: WindowSize = {
-  width: 0,
-  height: 0
+  width: MAX_SCREEN_WIDTH,
+  height: MAX_SCREEN_HEIGHT
 }
-
-const BREAK_POINT: number = 540;
-const MAX_SCREEN_WIDTH: number = 390;
-const MAX_SCREEN_HEIGHT: number = 844;
 
 export default function useWindowSize(): WindowSize {
   const windowSize = useSyncExternalStore<WindowSize>(subscribe, getSnapshot, getServerSnapshot);
@@ -23,10 +23,7 @@ export default function useWindowSize(): WindowSize {
 }
 
 function getServerSnapshot(): WindowSize {
-  return {
-    width: MAX_SCREEN_WIDTH,
-    height: MAX_SCREEN_HEIGHT
-  };
+  return windowSize;
 }
 
 function getSnapshot(): WindowSize {

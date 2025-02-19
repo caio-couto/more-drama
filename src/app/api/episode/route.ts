@@ -1,4 +1,4 @@
-import { poolConnection } from "@/lib/database";
+import { poolConnection } from "@/lib/database/connection";
 import { episodesTable } from "@/lib/database/schema";
 import { eq } from "drizzle-orm";
 import { NextRequest, NextResponse } from "next/server";
@@ -162,12 +162,4 @@ function slugify(str: string): string {
     .toLowerCase()
     .replace(/\s+/g, '-')
     .replace(/-+/g, '-');
-}
-
-export const config = {
-  api: {
-    bodyParser: {
-      sizeLimit: "500000kb"
-    }
-  },
 }

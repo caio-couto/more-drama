@@ -8,7 +8,7 @@ import Card from "../Card";
 import Video from "../Video";
 import NextEpisode from "../NextEpisode";
 
-const PAGINATION: number = 4
+const PAGINATION: number = 4;
 
 interface CarouselProps {
   slug: string,
@@ -65,10 +65,10 @@ export default function Carousel({ slug, episodes }: CarouselProps) {
     if (!screen || cardIndex < episodes.length) { return; }     
 
     setCards((cards) => {
-      if (cards.length === 0) { return cards; }      
+      if (cards.length < PAGINATION) { return cards; }      
 
       const startElement: number = episodes.indexOf(cards[cards.length - 2].data!);
-
+      
       const endElement: number =  cards.length / 2 + PAGINATION < episodes.length ?  episodes.indexOf(cards[cards.length - 2 + PAGINATION].data!) : -1;
 
       if (endElement === -1) {

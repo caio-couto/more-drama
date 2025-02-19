@@ -1,4 +1,4 @@
-import { poolConnection } from "@/lib/database";
+import { poolConnection } from "@/lib/database/connection";
 import { episodesTable, novelsTable } from "@/lib/database/schema";
 import { put } from "@vercel/blob";
 import { asc, desc, eq, or } from "drizzle-orm";

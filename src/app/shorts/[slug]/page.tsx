@@ -1,7 +1,7 @@
 import { ListSlugEpisode, ListEpisodeSlugResponse } from "@/app/api/episode/[slug]/route";
 import Carousel from "@/components/Carousel";
 import CarouselHeader from "@/components/CarouselHeader";
-import { poolConnection } from "@/lib/database";
+import { poolConnection } from "@/lib/database/connection";
 import { episodesTable, novelsTable } from "@/lib/database/schema";
 import { asc, eq, or } from "drizzle-orm";
 

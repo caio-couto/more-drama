@@ -1,16 +1,9 @@
-import { poolConnection } from "@/lib/database";
+import { poolConnection } from "@/lib/database/connection";
 import { novelsTable, episodesTable } from "@/lib/database/schema";
-import { put } from "@vercel/blob";
 import { eq, asc } from "drizzle-orm";
 import { NextRequest, NextResponse } from "next/server";
 
-export type ListNovel = {
-  id: number,
-  name: string,
-  slug: string,
-  description: string,
-  thumbnailUlr: string | null
-};
+export type ListNovel = Omit<typeof novelsTable.$inferSelect, "createdAt" | "updatedAt">;
 
 export type ListEpisode = {
   episode: number,
@@ -49,7 +42,7 @@ export async function GET(req: NextRequest, reqParams: ListNovelParams): Promise
         name: novelsTable.name,
         slug: novelsTable.slug,
         description: novelsTable.description,
-        thumbnailUlr: novelsTable.thumbnailUrl
+        thumbnailUrl: novelsTable.thumbnailUrl
       })
       .from(novelsTable)
       .where(eq(novelsTable.slug, noveSlug));
@@ -72,82 +65,37 @@ export async function GET(req: NextRequest, reqParams: ListNovelParams): Promise
   }
 }
 
-type UpdateNovel = {
-  id: number,
-  slug: string
-}
-
-interface UpdateNovelParams {
+interface DeleteNovelParams {
   params: Promise<{ slug: string }>
 }
 
-interface UpdateNovelResponse {
+interface DeleteNovelResponse {
   status: number
 }
 
-interface UpdateNovelError {
+interface DeleteNovelError {
   message: string,
   status: number
 }
 
-export async function PATCH(req: NextRequest, reqParams: UpdateNovelParams): Promise<NextResponse<UpdateNovelResponse | UpdateNovelError>> {
+export async function DELETE(req: NextRequest, reqParams: DeleteNovelParams): Promise<NextResponse<DeleteNovelResponse | DeleteNovelError>> {
   const params = await reqParams.params
-  const novelId: string = params.slug;
+  const noveSlug: string = params.slug;
 
-  if (!novelId) {
-    return NextResponse.json<UpdateNovelError>({
+  if (!noveSlug) {
+    return NextResponse.json<ListNovelError>({
       message: "the novel ID param is invalid or not provided",
       status: 400
     }, { status: 400 });
   }
-
-  if (!novelId) {
-    return NextResponse.json<UpdateNovelError>({
-      message: "the novel ID param is invalid or not provided",
-      status: 400
-    }, { status: 400 });
-  }
-
-  const formData: FormData = await req.formData();
-
-  const thumbnailImage: FormDataEntryValue | null = formData.get("thumbnail-image");
-
-  if (!thumbnailImage) {
-    return NextResponse.json<UpdateNovelError>({
-      message: "no file was uploaded",
-      status: 400
-    }, { status: 400 });
-  }
-
-  const thumbnailFile = thumbnailImage as File;
 
   try {
-    const novel: UpdateNovel[] = await poolConnection
-      .select({
-        id: novelsTable.id,
-        slug: novelsTable.slug
-      })
-      .from(novelsTable)
-      .limit(1)
-      .where(eq(novelsTable.id, parseInt(novelId)));
+    const deleteNovel = await poolConnection.delete(novelsTable)
+      .where(eq(novelsTable.id, parseInt(noveSlug)));
 
-    const thumbnailFileType: string = thumbnailFile.name ? thumbnailFile.name.split(".")[1] : thumbnailFile.type.split("/")[1];
-    const thumbnailFileName: string = `thumbnail-${novel[0].id}-${novel[0].slug}.${thumbnailFileType}`;
-
-    const thumbnailBlob = await put(thumbnailFileName, thumbnailFile, {
-      access: "public",
-      contentType: thumbnailFile.type
-    });
-
-    const updateNovel = await poolConnection.update(novelsTable)
-      .set({
-        thumbnailUrl: thumbnailBlob.url
-      })
-      .where(eq(novelsTable.id, parseInt(novelId)));
-
-    return NextResponse.json<UpdateNovelResponse>({ status: 200 }, { status: 200 });
+    return NextResponse.json<DeleteNovelResponse>({ status: 200 }, { status: 200 });
   } catch (error) {
-    return NextResponse.json<UpdateNovelError>({
+    return NextResponse.json<DeleteNovelError>({
       message: (error as Error).message,
       status: 500
     }, { status: 500 });
