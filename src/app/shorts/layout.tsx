@@ -1,7 +1,3 @@
-"use client"
-
-import Image from "next/image";
-import CarouselPlacehoulderPNG from "@public/carousel-placehoulder.png";
 
 export default function ShortsLayout({ children }: Readonly<{ children: React.ReactNode; }>) {
   return (

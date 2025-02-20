@@ -5,6 +5,7 @@ import NovelResume from "@/components/NovelResume";
 import { poolConnection } from "@/lib/database/connection";
 import { episodesTable, novelsTable } from "@/lib/database/schema";
 import { asc, eq } from "drizzle-orm";
+import { Metadata, ResolvingMetadata } from "next";
 
 interface StaticNovels {
   slug: string
@@ -20,6 +21,47 @@ export function generateStaticParams(): Promise<StaticNovels[]> {
     .then((novels: StaticNovels[]) => { resolve(novels); })
     .catch((error) => { reject(error); });
   });
+}
+
+type Props = {
+  params: Promise<StaticNovels>
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>
+}
+
+type MetadataEpisode = {
+  name: string,
+  description: string,
+  thumbnailUrl: string | null
+}
+
+export async function generateMetadata({ params, searchParams }: Props, parent: ResolvingMetadata ): Promise<Metadata> {
+  const slug: string = (await params).slug;
+ 
+  return new Promise<Metadata>((resolve, reject) => {
+    poolConnection 
+    .select({
+      name: novelsTable.name,
+      description: novelsTable.description,
+      thumbnailUrl: novelsTable.thumbnailUrl
+    })
+    .from(novelsTable)
+    .where(eq(novelsTable.slug, slug))
+    .then(async (episode: MetadataEpisode[]) => {
+      const previousImages = (await parent).openGraph?.images || [];
+     
+      const metadata: Metadata =  {
+        title: episode[0].name,
+        description: episode[0].description,
+        openGraph: {
+          images: episode[0].thumbnailUrl ?[episode[0].thumbnailUrl, ...previousImages] : [...previousImages],
+        },
+      }
+
+      resolve(metadata);
+    })
+    .catch((error) => reject(error));
+  });
+
 }
 
 export type ListNovel = {

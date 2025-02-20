@@ -141,22 +141,24 @@ export default function useCarousel<T extends HTMLElement>(): [(refNode: T) => v
   }, [isDragging, slideScreen, touchDistance]);
 
   useEffect(() => {
-    if (!screen || !enableDrag) { return; }
+    if (!screen) { return; }
 
     if (!isDragging) {
       setVisibleSlide(currentSlideIndex);
       return;
     }
 
+    if (dragDistance < 0 && !enableDrag) { return; }
+
     translateSlide(currentSlideIndex * windowSize.height - dragDistance);
   }, [dragDistance, isDragging, screen]);
 
   useEffect(() => {
-    if (isDragging || !enableDrag) { return; }
+    if (isDragging) { return; }
 
     const dragResistance: number = windowSize.height / DRAG_RESISTANCE;
 
-    if (-dragDistance > dragResistance) {
+    if (-dragDistance > dragResistance && enableDrag) {
       nextSlide();
     } else if (dragDistance > dragResistance) {
       prevSlide();

@@ -124,7 +124,7 @@ export default function VideoPlayback({ active, videoUrl, postUrl }: VideoPlayba
         disablePictureInPicture 
         playsInline
         autoPlay={false}
-        poster={postUrl ?? "https://www.videoplaceholder.com/static/BigBuckBunny-4979b146b7d4a6c16ae8badfe426fb6e.jpg"}>
+        poster={postUrl ? postUrl : undefined}>
         {videoUrl && (<source className="object-cover" src={videoUrl} type="video/webm"/>)}
       </video>
     </div>

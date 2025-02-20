@@ -8,7 +8,7 @@ import { useRef } from "react";
 
 interface VideoPrps {
   active: boolean,
-  slideScreenRef: (refNode: HTMLDivElement) => void,
+  slideScreenRef: ((refNode: HTMLDivElement) => void) | undefined,
   videoUrl: string | null,
   postUrl: string | null
 }

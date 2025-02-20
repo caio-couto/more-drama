@@ -24,7 +24,7 @@ export default function Header({ novel }: Readonly<HeaderProps>) {
   }
 
   return (
-    <header className={`fixed w-full md:w-mobile-screen-w md:left-1/2 md:-translate-x-1/2 md:top-[3.8rem] h-14 z-10 flex items-center justify-between py-3 px-4 ${ openMenu ? "bg-gray-800 bg-opacity-40 border-b border-gray-600 border-opacity-40" : ""}`}>
+    <header className={`absolute w-full md:w-mobile-screen-w md:left-1/2 md:-translate-x-1/2 h-14 z-10 flex items-center justify-between py-3 px-4 ${ openMenu ? "bg-gray-800 bg-opacity-40 border-b border-gray-600 border-opacity-40" : ""}`}>
       <Link href={"/"}>
         <Image className="" src={LogoSVG} alt="logo icon" width={128} height={20} priority={true} quality={100}/>
       </Link>

@@ -5,7 +5,9 @@ export default function Advertising() {
   return (
     <div className="py-8 px-2">
       <div className="uppercase text-center text-xs mb-2">Advertising</div>
-      <Image className="mx-auto" src={AdvertisingWEBP} alt="advertising image" width={358} height={356}/>
+      <div className="">
+        <Image className="mx-auto" src={AdvertisingWEBP} alt="advertising image" width={358} height={356}/>
+      </div>
     </div>
   );
 }
