@@ -21,6 +21,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${geistSans.variable} antialiased m-0`}>
       {children}
+      <SpeedInsights />
     </html>
   );
 }
