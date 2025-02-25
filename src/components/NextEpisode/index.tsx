@@ -16,16 +16,16 @@ export default function NextEpisode({ slideScreenRef, active, novel, handleClick
       <div ref={slideScreenRef} className="h-full">
         <Advertising/>
         <div className="py-5 px-4">
-          <h2>What is Lorem Ipsum</h2>
+          <h2 className="font-semibold text-lg mb-2">Você está assistindo:</h2>
           <p>
-            Lorem Ipsum is simply dummy text of the printing and 
-            typesetting industry. Lorem Ipsum has been the industry&apos
+            Não desafie a senhora Bilionária: Uma poderosa empresária que busca 
+            vingança após ser abandonada, casando-se impulsivamente com o chefe de seu ex.
           </p>
         </div>
       </div>
       <div className="w-full px-2 py-3 absolute bottom-0 bg-black">
         <button onClick={handleClick} className="w-full mb-4 py-4 px-4 rounded-3xl bg-primary font-semibold cursor-pointer">
-          Próximo episódio
+          Continuar assistindo...
         </button>
       </div>
     </div>

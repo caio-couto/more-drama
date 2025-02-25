@@ -1,6 +1,6 @@
 "use client"
 
-import LogoSVG from "@public/logo.svg";
+import LogoPNG from "@public/logo.png";
 import MenuDotsSVG from "@public/dots.svg";
 import EpisodesListSVG from "@public/episodes-list.svg";
 import Image from "next/image";
@@ -26,7 +26,7 @@ export default function Header({ novel }: Readonly<HeaderProps>) {
   return (
     <header className={`absolute w-full md:w-mobile-screen-w md:left-1/2 md:-translate-x-1/2 h-14 z-10 flex items-center justify-between py-3 px-4 ${ openMenu ? "bg-gray-800 bg-opacity-40 border-b border-gray-600 border-opacity-40" : ""}`}>
       <Link href={"/"}>
-        <Image className="" src={LogoSVG} alt="logo icon" width={128} height={20} priority={true} quality={100}/>
+        <Image className="" src={LogoPNG} alt="logo icon" width={128} height={20} priority={true} quality={100}/>
       </Link>
 
       <div className="px-3 cursor-pointer" onClick={handleOpenMenu}>
