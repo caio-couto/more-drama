@@ -8,19 +8,19 @@ export default async function Footer() {
       <div className="bg-background-secondary">
         <ul className="flex justify-between py-5 px-4 text-xs">
           <li>
-            <Link href={"/"}>Contato</Link>
+            <Link href={"https://empregossdosul.com/contato/"}>Contato</Link>
           </li>
           <div className="w-px h-3 bg-foreground"></div>
           <li>
-            <Link href={"/"}>Política de Privacidade</Link>
+            <Link href={"https://empregossdosul.com/sobre-nos/"}>Política de Privacidade</Link>
           </li>
           <div className="w-px h-3 bg-foreground"></div>
           <li>
-            <Link href={"/"}>Termos de Uso</Link>
+            <Link href={"https://empregossdosul.com/termos-de-uso/"}>Termos de Uso</Link>
           </li>
           <div className="w-px h-3 bg-foreground"></div>
           <li>
-            <Link href={"/"}>Sobre Nós</Link>
+            <Link href={"https://empregossdosul.com/politica-de-privacidade/"}>Sobre Nós</Link>
           </li>
         </ul>
       </div>
