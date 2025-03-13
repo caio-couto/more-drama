@@ -1,12 +1,14 @@
-import AdvertisingWEBP from "@public/advertising.webp";
-import Image from "next/image";
-
 export default function Advertising() {
   return (
     <div className="py-8 px-2">
       <div className="uppercase text-center text-xs mb-2">Advertising</div>
       <div className="">
-        <Image className="mx-auto" src={AdvertisingWEBP} alt="advertising image" width={358} height={356}/>
+      <div id="av_top_wrapper" style={{ width: "100%", marginTop: "2rem", marginBottom: "2rem", minHeight: "400px" }}>
+        <div>
+            <p style={{ fontSize: "10px", textTransform: "uppercase", textAlign: "center" }}> Anúncios </p>
+              <div id="av_top"></div>
+            </div>
+        </div>
       </div>
     </div>
   );
