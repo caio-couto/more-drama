@@ -119,11 +119,12 @@ export default async function Novel({ params }: NovelProps) {
 
   return (
     <>
-      <Advertising/>
       <div className="my-10">
-        <NovelCard novelName={novel.name} episodeSlug={episodes[0].slug} novelThumbUrl={novel.thumbnailUlr}/>
+        <NovelCard novelName={novel.name} redirect={`shorts/${episodes[0].slug}`} novelThumbUrl={null}/>
+        <p>Assista a seguir o mini drama {novel.name} com {episodes.length} episódios:</p>
+        <div className="max-w-fit rounded mb-4 mt-6 py-2 px-4 font-semibold bg-primary">Episódios</div>
+        <Advertising/>
         <div className="mx-4 mb-5">
-          <div className="max-w-fit rounded mb-4 py-2 px-4 font-semibold bg-primary">Episódios</div>
           <NovelEpisodes novelSlug={novel.slug} episodes={episodes}/>
         </div>
         <NovelResume>
