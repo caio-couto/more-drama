@@ -62,8 +62,6 @@ export default function Carousel({ slug, novel, episodes }: CarouselProps) {
   }, [cardIndex]);
 
   function generateInfiniteScroll(): void {    
-    console.log(cardIndex + 1, (cardIndex + 1) / 2, PAGINATION * paginationOffset, (cardIndex + 1) / 2 < PAGINATION * paginationOffset, paginationOffset);
-
     if (!screen || (cardIndex + 1) / 2 < PAGINATION * paginationOffset || episodes.length < PAGINATION) { return; }     
 
     const startElement: number = episodes.indexOf(cards[cards.length - 2].data!);
@@ -123,7 +121,7 @@ export default function Carousel({ slug, novel, episodes }: CarouselProps) {
     <div className="h-full">
       <div ref={screenRef} className="absolute w-full">
         {cards.map((card, index) => (
-          <Card key={index} hidden={!(index <= cardIndex + 1 && index >= cardIndex - 1)}>
+          <Card key={index} hidden={!(index <= cardIndex + 1 && index >= cardIndex - 1) && card.type !== CarouselCardType.ADVERTISING}>
             { card.type === CarouselCardType.VIDEO ?
             (<VideoContextProvider>
               <Video slideScreenRef={cardIndex === index ? slideScreenRef : undefined} active={cardIndex === index} videoUrl={card.data!.videoUrl} postUrl={card.data!.thumbnailUrl}/>
