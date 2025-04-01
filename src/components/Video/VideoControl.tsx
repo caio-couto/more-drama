@@ -4,6 +4,7 @@ import VideoLoadingSVG from "@public/video-loading.svg";
 import VideoPauseSVG from "@public/video-pause.svg";
 import VideoPlaySVG from "@public/video-play.svg";
 import VideoRestartSVG from "@public/video-restart.svg";
+import SwipeUpWEBM from "@public/swipe-up.gif";
 
 import { VideoContextValues, VideoStates } from "@/Context/Video/types";
 import useVideoContext from "@/Context/Video/VideoContext";
@@ -13,6 +14,13 @@ export default function VideoControl() {
 
   return (
     <div className="absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 p-3">
+
+      {videoContext.videoIndex === 0 && videoContext.videoState !== VideoStates.PLAYING && (
+      <div className="absolute w-32 h-32 top-1/2 -translate-y-1/2 -right-56 -translate-x-1/2">
+        <Image src={SwipeUpWEBM} alt="swipe up" width={120} height={120}/>
+      </div>)}
+      
+      
       {videoContext.videoState === VideoStates.LOADING ? 
       (
         <div className="bg-gray-800 bg-opacity-40 p-3 rounded-2xl">

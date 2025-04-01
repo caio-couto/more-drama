@@ -121,13 +121,16 @@ export default function Carousel({ slug, novel, episodes }: CarouselProps) {
     <div className="h-full">
       <div ref={screenRef} className="absolute w-full">
         {cards.map((card, index) => (
-          <Card key={index} hidden={!(index <= cardIndex + 1 && index >= cardIndex - 1) && card.type !== CarouselCardType.ADVERTISING}>
+          (<VideoContextProvider key={index}>
+            <Card key={index} slideIndex={index} hidden={!(index <= cardIndex + 1 && index >= cardIndex - 1) && card.type !== CarouselCardType.ADVERTISING}>
             { card.type === CarouselCardType.VIDEO ?
-            (<VideoContextProvider>
+            (
               <Video slideScreenRef={cardIndex === index ? slideScreenRef : undefined} active={cardIndex === index} videoUrl={card.data!.videoUrl} postUrl={card.data!.thumbnailUrl}/>
-            </VideoContextProvider>) :
+            ):
             (<NextEpisode slideScreenRef={cardIndex === index ? slideScreenRef : undefined} active={cardIndex === index} novel={novel} handleClick={handleCLick}/>)}
           </Card>
+          </VideoContextProvider>)
+          
         ))}
       </div>
     </div>

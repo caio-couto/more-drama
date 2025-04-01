@@ -14,6 +14,7 @@ export default function VideoContextProvider({ children }: Readonly<VideoContext
   const [enableDrag, setEnableDrag] = useState<boolean>(true);
   const [duration, setDuration] = useState<number>(0);
   const [video, setVideo] = useState<HTMLVideoElement | null>(null);
+  const [videoIndex, setVideoIndex] = useState<number>(0);
   
   return (
    <VideoContext.Provider value={{
@@ -26,7 +27,9 @@ export default function VideoContextProvider({ children }: Readonly<VideoContext
     duration, 
     setDuration,
     video,
-    setVideo
+    setVideo,
+    videoIndex,
+    setVideoIndex
    }}>
     {children}
    </VideoContext.Provider> 

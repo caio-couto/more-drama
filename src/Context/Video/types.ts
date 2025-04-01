@@ -19,4 +19,6 @@ export interface VideoContextValues {
   setDuration: Dispatch<SetStateAction<number>>,
   video: HTMLVideoElement | null,
   setVideo: Dispatch<SetStateAction<HTMLVideoElement | null>>
+  videoIndex: number,
+  setVideoIndex: Dispatch<SetStateAction<number>>
 }

@@ -4,7 +4,6 @@ import VideoControl from "./VideoControl";
 import VideoPlayback from "./VideoPlayback";
 import VideoRange from "./VideoRange";
 import style from "./style.module.css";
-import { useRef } from "react";
 
 interface VideoPrps {
   active: boolean,
