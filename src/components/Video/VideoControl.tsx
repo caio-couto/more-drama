@@ -17,7 +17,7 @@ export default function VideoControl() {
 
       {videoContext.videoIndex === 0 && videoContext.videoState !== VideoStates.PLAYING && (
       <div className="absolute w-32 h-32 top-1/2 -translate-y-1/2 -right-56 -translate-x-1/2">
-        <Image src={SwipeUpWEBM} alt="swipe up" width={120} height={120}/>
+        <Image src={SwipeUpWEBM} alt="swipe up" width={120} height={120} unoptimized/>
       </div>)}
       
       
