@@ -15,7 +15,7 @@ export default function NextEpisode({ slideScreenRef, active, novel, handleClick
     <div className="w-full h-full pt-6 bg-black relative">
       <div ref={slideScreenRef} className="h-full">
         <Advertising/>
-        <div className="py-5 px-4">
+        <div className="py-2 px-4">
           <h2 className="font-semibold text-lg mb-2">Você está assistindo:</h2>
           <p>
             Não desafie a senhora Bilionária: Uma poderosa empresária que busca 
@@ -24,8 +24,8 @@ export default function NextEpisode({ slideScreenRef, active, novel, handleClick
         </div>
       </div>
       <div className="w-full px-2 py-3 absolute bottom-0 bg-black">
-        <button onClick={handleClick} className="w-full mb-4 py-4 px-4 rounded-3xl bg-primary font-semibold cursor-pointer">
-          Continuar assistindo...
+        <button data-av-rewarded="true" onClick={handleClick} className="w-full mb-4 py-4 px-4 rounded-3xl bg-primary font-semibold cursor-pointer">
+          Próximo episódio
         </button>
       </div>
     </div>
