@@ -129,7 +129,7 @@ export default async function Novel({ params }: NovelProps) {
           <p>Assista a seguir o mini drama {novel.name} com {episodes.length} episódios:</p>
         </div>
         <Advertising/>
-        <Link className="" href={`shorts/${episodes[0].slug}`}>
+        <Link className="" href={`/shorts/${episodes[0].slug}`}>
             <div className="relative w-36 h-64 rounded-[11px] overflow-hidden mx-auto">
               <Image src={NovelCardBorderPNG} className="mx-auto absolute w-full h-full" alt="novel card border" width={149} height={265}/>
               { novel.thumbnailUlr && (<div className="">
