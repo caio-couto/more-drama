@@ -12,10 +12,10 @@ interface NextEpisodeProps {
 
 export default function NextEpisode({ slideScreenRef, active, novel, handleClick  }: NextEpisodeProps) {
   return (
-    <div className="w-full h-full pt-6 bg-black relative">
+    <div className="w-full h-full pt-14 bg-black relative">
       <div ref={slideScreenRef} className="h-full">
         <Advertising/>
-        <div className="py-2 px-4">
+        <div className="px-4">
           <h2 className="font-semibold text-lg mb-2">Você está assistindo:</h2>
           <p>
             Não desafie a senhora Bilionária: Uma poderosa empresária que busca 
