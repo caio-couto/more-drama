@@ -13,7 +13,7 @@ interface NextEpisodeProps {
 export default function NextEpisode({ slideScreenRef, active, novel, handleClick  }: NextEpisodeProps) {
   return (
     <div className="w-full h-full pt-14 bg-black relative">
-      <div ref={slideScreenRef} className="relative top-1/2">
+      <div ref={slideScreenRef} className="relative top-1/2 -translate-y-1/2">
         <div className="px-4">
           <h2 className="font-semibold text-lg mb-2">Você está assistindo:</h2>
           <p>

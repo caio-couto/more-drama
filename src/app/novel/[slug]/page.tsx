@@ -130,12 +130,11 @@ export default async function Novel({ params }: NovelProps) {
         </div>
         <Advertising/>
         <Link className="" href={`/shorts/${episodes[0].slug}`}>
-            <div className="relative w-36 h-64 rounded-[11px] overflow-hidden mx-auto">
-              <Image src={NovelCardBorderPNG} className="mx-auto absolute w-full h-full" alt="novel card border" width={149} height={265}/>
-              { novel.thumbnailUlr && (<div className="">
-                <Image src={novel.thumbnailUlr} className="mx-auto" alt="novel image" width={149} height={265} priority={true} quality={100}/>
-                </div>)}
-            </div>
+          <div className="relative w-36 h-64 overflow-hidden mx-auto">
+            { novel.thumbnailUlr && (<div className="">
+              <Image src={novel.thumbnailUlr} className="mx-auto" alt="novel image" width={156} height={265} priority={true} quality={100}/>
+              </div>)}
+          </div>
         </Link>
         <div className="mx-4 mb-5">
           <div className="max-w-fit rounded mb-4 mt-6 py-2 px-4 font-semibold bg-primary">Episódios</div>
